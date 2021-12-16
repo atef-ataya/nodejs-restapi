@@ -71,10 +71,15 @@ mongoose
   .connect(
     'mongodb+srv://atef-ataya:Lily1986@cluster0.ka3pb.mongodb.net/messages?retryWrites=true&w=majority'
   )
-  .then(
-    app.listen(1000, () => {
-      console.log('Server is running http://localhost:1000');
-      console.log('Database server is ready.');
-    })
-  )
+  .then((result) => {
+    //Server Setuup
+    const server = app.listen(1000);
+    console.log('Server is running http://localhost:1000');
+    console.log('Database server is ready.');
+    // Setup SOCKET.IO
+    const io = require('./socket').init(server);
+    io.on('connection', (socket) => {
+      console.log('Client Connected');
+    });
+  })
   .catch((err) => console.log(err));
